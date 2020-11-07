@@ -1,18 +1,27 @@
 <template>
-  <div class="pa-10">
+  <v-container>
     <h1 class="mb-4">Dashboard</h1>
 
-    <SalesGraph v-for="sale in sales" :key="`${sale.title}`" :sale="sale" />
+    <v-row>
+      <v-col v-for="sale in sales" :key="`${sale.title}`">
+        <SalesGraph :sale="sale" />
+      </v-col>
+    </v-row>
 
-    <StatisticCard
-      v-for="statistic in statistics"
-      :key="`${statistic.title}`"
-      :statistic="statistic"
-    />
+    <v-row>
+      <v-col v-for="statistic in statistics" :key="`${statistic.title}`">
+        <StatisticCard :statistic="statistic" />
+      </v-col>
+    </v-row>
 
-    <EmployeesTable :employees="employees" @select-employee="setEmployee" />
-
-    <EventTimeline :timeline="timeline" />
+    <v-row>
+      <v-col cols="8">
+        <EmployeesTable :employees="employees" @select-employee="setEmployee" />
+      </v-col>
+      <v-col clos="4">
+        <EventTimeline :timeline="timeline" />
+      </v-col>
+    </v-row>
 
     <v-snackbar v-model="snackbar">
       You have selected {{ selectedEmployee.name }}, {{ selectedEmployee.title }}
@@ -22,7 +31,7 @@
         <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
       </template>
     </v-snackbar>
-  </div>
+  </v-container>
 </template>
 
 <script>
