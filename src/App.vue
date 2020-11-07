@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <v-app-bar app color="primary" dark>
       <v-toolbar-title>Vuetify Dashboard</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -9,9 +9,7 @@
         text
         rounded
         :to="link.url"
-      >
-        {{ link.label }}
-      </v-btn>
+      >{{ link.label }}</v-btn>
     </v-app-bar>
     <v-main>
       <router-view></router-view>
@@ -27,11 +25,10 @@
           rounded
           class="my-2"
           :to="link.url"
-        >
-          {{ link.label }}
-        </v-btn>
+        >{{ link.label }}</v-btn>
         <v-col class="primary lighten-2 py-4 text-center white--text" cols="12">
-          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+          {{ new Date().getFullYear() }} —
+          <strong>Vuetify</strong>
         </v-col>
       </v-row>
     </v-footer>
@@ -51,8 +48,18 @@ export default {
       {
         label: "Login",
         url: "/login"
+      },
+      {
+        label: "Dashboard",
+        url: "/dashboard"
       }
     ]
   })
 };
 </script>
+
+<style lang="scss" scoped>
+.app {
+  min-height: 100vh;
+}
+</style>
