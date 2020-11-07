@@ -8,18 +8,26 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row class="mb-16">
       <v-col v-for="statistic in statistics" :key="`${statistic.title}`" cols="12" sm="6" lg="3">
         <StatisticCard :statistic="statistic" />
       </v-col>
     </v-row>
 
-    <v-row>
+    <!-- 使用 v-intersect 判斷該區塊是否進入到可視範圍 -->
+    <v-row id="below-the-fold" v-intersect="showMoreContent">
       <v-col cols="12" md="8">
         <EmployeesTable :employees="employees" @select-employee="setEmployee" />
       </v-col>
       <v-col clos="12" md="4">
         <EventTimeline :timeline="timeline" />
+      </v-col>
+    </v-row>
+
+    <!-- 上方區塊進入可視範圍才顯示此組件 -->
+    <v-row v-if="loadNewContent" id="more-content">
+      <v-col>
+        <v-skeleton-loader ref="skeleton" type="table" class="ma-auto" />
       </v-col>
     </v-row>
 
@@ -55,6 +63,7 @@ export default {
   },
   data() {
     return {
+      loadNewContent: false,
       snackbar: false,
       employees: employeesData,
       sales: salesData,
@@ -71,6 +80,10 @@ export default {
       this.snackbar = true;
       this.selectedEmployee.name = event.name;
       this.selectedEmployee.title = event.title;
+    },
+    showMoreContent(entries) {
+      // 是否進入可視範圍
+      this.loadNewContent = entries[0].isIntersecting;
     }
   }
 };
