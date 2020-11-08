@@ -27,6 +27,11 @@ const routes = [
     name: "signup",
     component: () =>
       import(/* webpackChunkName: "signup" */ "../views/Signup.vue")
+  },
+  {
+    path: "/flex",
+    name: "flex",
+    component: () => import(/* webpackChunkName: "flex" */ "../views/Flex.vue")
   }
 ];
 

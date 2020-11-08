@@ -57,6 +57,10 @@ export default {
       {
         label: "Dashboard",
         url: "/dashboard"
+      },
+      {
+        label: "Flex",
+        url: "/flex"
       }
     ]
   }),
