@@ -61,6 +61,10 @@ export default {
       {
         label: "Flex",
         url: "/flex"
+      },
+      {
+        label: "Tabs",
+        url: "/tabs"
       }
     ]
   }),
