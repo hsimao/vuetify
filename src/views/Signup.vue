@@ -4,13 +4,21 @@
       <v-col>
         <h1>Signup</h1>
         <v-form ref="signupForm" v-model="formValidity" lazy-validation @submit.prevent="submit">
-          <v-text-field label="Email" type="email" v-model="email" :rules="emailRules" />
+          <v-text-field label="Name" v-model="name.value" :rules="name.rules" />
+
+          <v-text-field label="Email" type="email" v-model="email.value" :rules="email.rules" />
+
+          <v-text-field label="Phone" v-model="phone.value" :rules="phone.rules" />
+
+          <v-text-field label="Money" type="number" v-model="money.value" :rules="money.rules" />
+
+          <v-text-field label="Fee" type="number" v-model="fee.value" :rules="fee.rules" />
 
           <v-autocomplete
             label="Which browser do you use?"
-            v-model="selectedBrowser"
-            :items="browser"
-            :rules="[value => !!value || 'Browser must be choose.']"
+            v-model="browser.value"
+            :items="browserList"
+            :rules="browser.rules"
           ></v-autocomplete>
 
           <v-file-input accept="image/*" label="Attach profile picture"></v-file-input>
@@ -45,8 +53,8 @@
 
           <v-checkbox
             label="Agree to terms & conditions"
-            v-model="agreeToTerms"
-            :rules="agreeToTermsRules"
+            v-model="agreeToTerms.value"
+            :rules="agreeToTerms.rules"
             required
           ></v-checkbox>
 
@@ -61,28 +69,63 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-const emailRule = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+import {
+  required,
+  email,
+  minLength,
+  maxLength,
+  minMaxLength,
+  minLimit,
+  maxLimit,
+  minMaxLimit
+} from "@/rules.js";
 
 export default {
   name: "Signup",
   data: () => ({
-    browser: ["Chrome", "Firefox", "Safari", "Edge", "Brave"],
-    selectedBrowser: "",
-    birthday: "",
+    formValidity: false,
     menu: false,
-    email: "",
-    emailRules: [
-      value => !!value || "Email is required.",
-      value => emailRule.test(value) || "Email invalid."
-    ],
-    agreeToTerms: false,
-    agreeToTermsRules: [
-      value =>
-        !!value ||
-        "You must agree to the terms and conditions to sign up for an account."
-    ],
-    formValidity: false
+    birthday: "",
+    browserList: ["Chrome", "Firefox", "Safari", "Edge", "Brave"],
+    browser: {
+      value: "",
+      rules: [required("Browser must be choose.")]
+    },
+    name: {
+      value: "",
+      rules: [
+        required("Name is required!"),
+        minLength(4, "不可小於 4 字元"),
+        maxLength(20, "不可大於 20 字元")
+      ]
+    },
+    phone: {
+      value: "",
+      rules: [required("Phone is required!"), minMaxLength(9, 12)]
+    },
+    money: {
+      value: 0,
+      rules: [
+        minLimit(50, "金額不可低於 50 元"),
+        maxLimit(1000, "金額不可大於 1000 元")
+      ]
+    },
+    fee: {
+      value: 0,
+      rules: [minMaxLimit(10, 500, "手續費最少 10 元, 最多 500 元")]
+    },
+    email: {
+      value: "",
+      rules: [required(), email("信箱格式錯誤")]
+    },
+    agreeToTerms: {
+      value: false,
+      rules: [
+        required(
+          "You must agree to the terms and conditions to sign up for an account."
+        )
+      ]
+    }
   }),
   watch: {
     menu(val) {
